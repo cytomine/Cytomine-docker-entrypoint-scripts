@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 
-if /usr/bin/find "/docker-entrypoint.d/" -mindepth 1 -maxdepth 1 -type f -print -quit 2>/dev/null | read v; then
-  echo >&2 "$0: /docker-entrypoint.d/ is not empty, will attempt to perform configuration"
+ENTRYPOINTS_DIR="docker-entrypoint-cytomine.d"
 
-  echo >&2 "$0: Looking for shell scripts in /docker-entrypoint.d/"
-  find "/docker-entrypoint.d/" -follow -type f -print | sort -V | while read -r f; do
+if /usr/bin/find "/$ENTRYPOINTS_DIR/" -mindepth 1 -maxdepth 1 -type f -print -quit 2>/dev/null | read v; then
+  echo >&2 "$0: /$ENTRYPOINTS_DIR/ is not empty, will attempt to perform configuration"
+
+  echo >&2 "$0: Looking for shell scripts in /$ENTRYPOINTS_DIR/"
+  find "/$ENTRYPOINTS_DIR/" -follow -type f -print | sort -V | while read -r f; do
     case "$f" in
       *.sh)
         if [ -x "$f" ]; then
@@ -21,7 +23,7 @@ if /usr/bin/find "/docker-entrypoint.d/" -mindepth 1 -maxdepth 1 -type f -print 
 
   echo >&2 "$0: Configuration complete; ready for start up"
 else
-  echo >&2 "$0: No files found in /docker-entrypoint.d/, skipping configuration"
+  echo >&2 "$0: No files found in /$ENTRYPOINTS_DIR/, skipping configuration"
 fi
 
 # executing next entrypoint
