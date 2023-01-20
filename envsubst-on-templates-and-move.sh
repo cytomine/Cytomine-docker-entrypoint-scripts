@@ -43,6 +43,13 @@ auto_envsubst_and_move_all() {
   done
 }
 
-auto_envsubst_and_move_all ${1:-"/cm_configs"} ${2:-".sample"}
+CONFIG_FOLDER=${1:-"/cm_configs"}
+TEMPLATE_SUFFIX=${2:-".sample"}
+
+if [ -d $CONFIG_FOLDER ]; then
+  auto_envsubst_and_move_all $CONFIG_FOLDER $TEMPLATE_SUFFIX 
+else
+  echo >&2 "$ME: ERROR: configuration directory '$CONFIG_FOLDER' not found"
+fi
 
 exit 0
