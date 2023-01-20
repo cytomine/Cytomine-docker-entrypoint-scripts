@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 if /usr/bin/find "/docker-entrypoint.d/" -mindepth 1 -maxdepth 1 -type f -print -quit 2>/dev/null | read v; then
   echo >&2 "$0: /docker-entrypoint.d/ is not empty, will attempt to perform configuration"
 
