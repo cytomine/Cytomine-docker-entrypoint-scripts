@@ -49,7 +49,7 @@ TEMPLATE_SUFFIX=${2:-".sample"}
 if [ -d $CONFIG_FOLDER ]; then
   auto_envsubst_and_move_all $CONFIG_FOLDER $TEMPLATE_SUFFIX 
 else
-  echo >&2 "$ME: ERROR: configuration directory '$CONFIG_FOLDER' not found"
+  echo >&2 "$ME: WARNING: configuration directory '$CONFIG_FOLDER' not found"
 fi
 
 exit 0
