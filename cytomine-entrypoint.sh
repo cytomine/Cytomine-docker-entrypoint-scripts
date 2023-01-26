@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 ENTRYPOINTS_DIR="docker-entrypoint-cytomine.d"
 
