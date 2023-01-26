@@ -33,11 +33,11 @@ auto_envsubst_and_move_all() {
     fi
 
     # file interpolation
-    if [[ $(basename $source_filepath) != $(basename $target_filepath) ]]; then
+    if [ $(basename $source_filepath) != $(basename $target_filepath) ]; then
       echo "$ME: Running envsubst on $source_filepath to $target_filepath"
       envsubst "$defined_envs" < "$source_filepath" > "$target_filepath"
     else
-      echo "$ME: Copying file '$source_relative_filepath' to target directory '$target_dirpath'"  
+      echo "$ME: Copying file '$source_relative_filepath' to target '$target_filepath'"
       cp $source_filepath $target_filepath
     fi 
   done
