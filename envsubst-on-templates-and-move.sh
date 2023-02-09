@@ -4,6 +4,15 @@ set -e
 
 ME=$(basename $0)
 
+# cross platform realpath
+# busy box realpath does not support the '--relative-to' switch
+relpath () {
+  local ref absolute
+  ref=$(realpath $1)
+  absolute=$(realpath $2)
+  echo ${absolute#"$ref"}
+}
+
 auto_envsubst_and_move_all() {
   local root_directory suffix defined_envs
   root_directory=$(realpath $1)
@@ -13,8 +22,8 @@ auto_envsubst_and_move_all() {
     # relative path to root directory 
     local source_filepath source_relative_filepath target_dirpath target_filepath source_filepath_no_suffix
     source_filepath=$(realpath $found_file)
-    source_relative_filepath=$(realpath --relative-to=$root_directory $found_file)
-    target_filepath="/"${source_relative_filepath%%"$suffix"}
+    source_relative_filepath=$(relpath $root_directory $found_file)
+    target_filepath=${source_relative_filepath%%"$suffix"}
     target_dirpath=$(dirname $target_filepath)
     source_filepath_no_suffix=${source_filepath%%"$suffix"}
     if [ $(basename $source_filepath) != $(basename $target_filepath) ] && [ -f $source_filepath_no_suffix ]; then
