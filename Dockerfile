@@ -1,6 +1,8 @@
 # This image is used a a comple holder of entrypoint scripts
 FROM scratch
-MAINTAINER Cytomine <dev@cytomine.com>
+LABEL maintainer="Cytomine <dev@cytomine.com>"
+
+WORKDIR .
 
 # Pick all bash scripts
 COPY *.sh .

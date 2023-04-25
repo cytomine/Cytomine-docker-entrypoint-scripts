@@ -27,6 +27,11 @@ lint-dockerfiles:
   #HADOLINT_OPT: --ignore DL3008
   script:
     - hadolint ${HADOLINT_OPT} Dockerfile
+  rules:
+    - changes:
+        - Dockerfile
+      when: always
+    - when: manual
 
 build-docker-image:
   stage: build
