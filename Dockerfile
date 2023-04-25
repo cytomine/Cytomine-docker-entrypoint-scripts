@@ -2,7 +2,7 @@
 FROM scratch
 LABEL maintainer="Cytomine <dev@cytomine.com>"
 
-WORKDIR .
+WORKDIR /
 
 # Pick all bash scripts
 COPY *.sh .
