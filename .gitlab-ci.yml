@@ -9,7 +9,9 @@ variables:
 
 workflow:
   rules:
-    - if: '$CI_PIPELINE_SOURCE != "push"'
+    # Avoid the pipeline to be triggered for merge request event, because it would be a duplicated event when
+    #  a push is made on a branch that has an open merge request linked (as suggested in the default GitLab workflow)
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
       when: never
 
 lint-dockerfiles:
