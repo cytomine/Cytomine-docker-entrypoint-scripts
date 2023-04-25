@@ -1,0 +1,30 @@
+stages:
+  - lint
+  - build
+  - publish
+
+variables:
+  IMAGE_NAME: "entrypoint-scripts"
+  IMAGE_VERSION: "0.0.1"
+
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE != "push"'
+      when: never
+
+lint-dockerfiles:
+  stage: lint
+  image: hadolint:latest-debian
+  variables:
+  #HADOLINT_OPT: --ignore DL3008
+  script:
+    - hadolint ${HADOLINT_OPT} Dockerfile
+
+build-docker-image:
+  stage: build
+  image: docker:latest
+  needs:
+    - job: lint-dockerfiles
+  script:
+    - echo "Build command is \n\t docker build -t cytomine/${IMAGE_NAME}:${IMAGE_VERSION} -t cytomine/${IMAGE_NAME}:latest -f Dockerfile ."
+    - docker build -t cytomine/${IMAGE_NAME}:${IMAGE_VERSION} -t cytomine/${IMAGE_NAME}:latest -f Dockerfile .
