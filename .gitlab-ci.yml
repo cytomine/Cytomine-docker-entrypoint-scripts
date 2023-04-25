@@ -46,22 +46,21 @@ lint-dockerfiles:
 build-docker-image:
   stage: build
   image: docker:latest
+  rules:
+    - if: ${IS_OPEN_SOURCE_RELEASE_CANDIDATE} == "true"
   script:
+    - echo "The tag $CI_COMMIT_TAG has been pushed. Build & publish the image."
+
     - echo "Build command is \n\t docker build -t cytomine/${IMAGE_NAME}:${IMAGE_VERSION} -t cytomine/${IMAGE_NAME}:latest -f Dockerfile ."
     - docker build -t cytomine/${IMAGE_NAME}:${IMAGE_VERSION} -t cytomine/${IMAGE_NAME}:latest -f Dockerfile .
-    - |
-      if [ ${IS_OPEN_SOURCE_RELEASE_CANDIDATE} == "true" ]; then        
-        echo "The tag $CI_COMMIT_TAG has been pushed. Publish the image."        
-        
-        # Use credential helper (see https://docs.docker.com/engine/reference/commandline/login/#credentials-store)
-        mkdir -p $HOME/.docker && echo $DOCKER_HUB_AUTH_CONFIG > $HOME/.docker/config.json
-        echo "Registry credentials configured at $HOME/.docker/config.json"
-        
-        echo "Pushing image to registry, tagged as cytomine/${IMAGE_NAME}:${IMAGE_VERSION}"
-        docker push cytomine/${IMAGE_NAME}:${IMAGE_VERSION}
-        echo "Pushing image to registry, tagged as cytomine/${IMAGE_NAME}:latest"
-        docker push cytomine/${IMAGE_NAME}:latest
-      
-      else
-        echo "No tag has been pushed, this build will not be published."
-      fi
+
+    # Use credential helper (see https://docs.docker.com/engine/reference/commandline/login/#credentials-store)
+    - mkdir -p $HOME/.docker && echo $DOCKER_HUB_AUTH_CONFIG > $HOME/.docker/config.json
+    - echo "Registry credentials configured at $HOME/.docker/config.json"
+
+    - echo "Pushing image to registry, tagged as cytomine/${IMAGE_NAME}:${IMAGE_VERSION}"
+    - docker push cytomine/${IMAGE_NAME}:${IMAGE_VERSION}
+    - echo "Pushing image to registry, tagged as cytomine/${IMAGE_NAME}:latest"
+    - docker push cytomine/${IMAGE_NAME}:latest
+
+    # - echo "No tag has been pushed, this build will not be published."
