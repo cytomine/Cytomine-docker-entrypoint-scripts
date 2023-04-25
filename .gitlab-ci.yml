@@ -22,7 +22,7 @@ default:
 
 lint-dockerfiles:
   stage: lint
-  image: hadolint:latest-debian
+  image: hadolint/hadolint:latest-alpine
   variables:
   #HADOLINT_OPT: --ignore DL3008
   script:
