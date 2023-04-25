@@ -1,10 +1,11 @@
-# This image is used a a comple holder of entrypoint scripts
+# This image is used as a wrapper of entrypoint scripts of other containers.
 FROM scratch
 LABEL maintainer="Cytomine <dev@cytomine.com>"
 
+# Set current directory
 WORKDIR /
 
 # Pick all bash scripts
 COPY *.sh .
 
-# docker build . -t cytomine/entrypoint-scripts:v0.0.1 -t cytomine/entrycpoint-scripts:latest
+# No ENTRYPOINT nor CMD, this container is not meant to run.
