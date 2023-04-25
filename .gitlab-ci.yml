@@ -16,6 +16,10 @@ workflow:
 
     - when: always
 
+default:
+  tags:
+    - docker
+
 lint-dockerfiles:
   stage: lint
   image: hadolint:latest-debian
