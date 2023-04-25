@@ -43,7 +43,9 @@ build-docker-image:
     - echo "Build command is \n\t docker build -t cytomine/${IMAGE_NAME}:${IMAGE_VERSION} -t cytomine/${IMAGE_NAME}:latest -f Dockerfile ."
     - docker build -t cytomine/${IMAGE_NAME}:${IMAGE_VERSION} -t cytomine/${IMAGE_NAME}:latest -f Dockerfile .
     - |
-      if [ ! -z "${CI_COMMIT_TAG}" ]; then
+      if [ -z "${CI_COMMIT_TAG}" ]; then
+        echo "No tag has been pushed, this build will not be published to ${DOCKERHUB_URL}"
+      else
         echo "The tag $CI_COMMIT_TAG has been pushed. Publish the image to ${DOCKERHUB_URL}" 
         echo "Login to registry ${DOCKERHUB_URL} with user ${DOCKERHUB_USER} 
         docker login -u ${DOCKERHUB_USER} -p ${DOCKERHUB_PASSWORD} ${DOCKERHUB_URL}
