@@ -41,8 +41,8 @@ lint-dockerfiles:
         - Dockerfile
       when: always
 
-    # If the Dockerfile has not been changed, this job can be skipped and manually invoked later
-    - when: manual
+    # If the Dockerfile has not been changed, this job can be skipped
+    - when: never
       allow_failure: true
 
 build-docker-image:
