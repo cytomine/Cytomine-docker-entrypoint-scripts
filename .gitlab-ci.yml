@@ -4,7 +4,7 @@ stages:
 
 variables:
   IMAGE_NAME: "entrypoint-scripts"
-  IMAGE_VERSION: "SNAPSHOT"
+  IMAGE_VERSION: "invalid"
   # Those other vars should be inherited from GitLab:
   # DOCKER_HUB_AUTH_CONFIG
 
@@ -17,12 +17,11 @@ workflow:
 
     # Publish only tags matching our guidelines
     # (see https://gitlab.cytom.in/groups/cm/rnd/docs/-/wikis/home#versioning )
-    - if: $CI_COMMIT_TAG =~ /^[0-9]+(?:\.[0-9]+){0,2}(-.*)*$/
+    - if: $CI_COMMIT_TAG != null && $CI_COMMIT_TAG =~ /^[0-9]+(?:\.[0-9]+){0,2}(-.*)*$/
       variables:
         IS_OPEN_SOURCE_RELEASE_CANDIDATE: "true"
         IMAGE_VERSION: $CI_COMMIT_TAG
-
-    - when: always
+      when: always
 
 default:
   tags:
@@ -44,6 +43,15 @@ lint-dockerfiles:
     # If the Dockerfile has not been changed, this job can be skipped
     - when: never
       allow_failure: true
+
+enforce-tag-guideline:
+  stage: lint
+  image: scratch
+  rules:
+    - if: $CI_COMMIT_TAG != null && $IMAGE_VERSION == 'invalid'
+  script:
+    - echo "The tag $CI_COMMIT_TAG does not follow our guideline. See https://gitlab.cytom.in/groups/cm/rnd/docs/-/wikis/home#versioning
+    - exit 1
 
 build-docker-image:
   stage: build
