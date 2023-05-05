@@ -21,7 +21,8 @@ workflow:
       variables:
         IS_OPEN_SOURCE_RELEASE_CANDIDATE: "true"
         IMAGE_VERSION: $CI_COMMIT_TAG
-      when: always
+
+    - when: always
 
 default:
   tags:
