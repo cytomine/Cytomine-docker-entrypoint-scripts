@@ -4,7 +4,7 @@ stages:
 
 variables:
   IMAGE_NAME: "entrypoint-scripts"
-  IMAGE_VERSION: "1.2.0"
+  IMAGE_VERSION: "invalid"
   # Those other vars should be inherited from GitLab:
   # DOCKER_HUB_AUTH_CONFIG
 
@@ -15,10 +15,12 @@ workflow:
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
       when: never
 
-    # Publish it if it has ANY tag.
-    - if: $CI_COMMIT_TAG != null
+    # Publish only tags matching our guidelines
+    # (see https://gitlab.cytom.in/groups/cm/rnd/docs/-/wikis/home#versioning )
+    - if: $CI_COMMIT_TAG != null && $CI_COMMIT_TAG =~ /^[0-9]+(?:\.[0-9]+){0,2}(-.*)*$/
       variables:
         IS_OPEN_SOURCE_RELEASE_CANDIDATE: "true"
+        IMAGE_VERSION: $CI_COMMIT_TAG
 
     - when: always
 
@@ -39,9 +41,19 @@ lint-dockerfiles:
         - Dockerfile
       when: always
 
-    # If the Dockerfile has not been changed, this job can be skipped and manually invoked later
-    - when: manual
+    # If the Dockerfile has not been changed, this job can be skipped
+    - when: never
       allow_failure: true
+
+enforce-tag-guideline:
+  stage: lint
+  image: bash
+  # This job is only meant to fail the pipeline if the tag does not match our guidelines.
+  rules:
+    - if: $CI_COMMIT_TAG != null && $IMAGE_VERSION == 'invalid'
+  script:
+    - echo "The tag $CI_COMMIT_TAG does not follow our guideline. See https://gitlab.cytom.in/groups/cm/rnd/docs/-/wikis/home#versioning
+    - exit 1
 
 build-docker-image:
   stage: build
