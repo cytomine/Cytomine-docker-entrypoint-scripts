@@ -30,7 +30,7 @@ default:
 
 lint-dockerfiles:
   stage: lint
-  image: hadolint/hadolint:latest-alpine
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/hadolint/hadolint:latest-alpine
   # Uncomment to silent some warnings if needed
   #variables:
   #  HADOLINT_OPT: --ignore DL3008
@@ -47,7 +47,7 @@ lint-dockerfiles:
 
 enforce-tag-guideline:
   stage: lint
-  image: bash
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/bash:latest
   # This job is only meant to fail the pipeline if the tag does not match our guidelines.
   rules:
     - if: $CI_COMMIT_TAG != null && $IMAGE_VERSION == 'invalid'
@@ -57,7 +57,7 @@ enforce-tag-guideline:
 
 build-docker-image:
   stage: build
-  image: docker:latest
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/docker:latest
   rules:
     - if: $IS_OPEN_SOURCE_RELEASE_CANDIDATE == 'true'
   script:
