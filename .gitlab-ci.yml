@@ -68,7 +68,7 @@ build-docker-image:
       docker build \
         --build-arg IMAGE_VERSION=${IMAGE_VERSION} \
         --build-arg IMAGE_REVISION=${CI_COMMIT_SHORT_SHA} \
-        -t ${IMAGE_NAME}:${IMAGE_VERSION} \ 
+        -t ${IMAGE_NAME}:${IMAGE_VERSION} \
         -t ${IMAGE_NAME}:latest \
         -f Dockerfile \
         .

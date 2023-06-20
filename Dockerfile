@@ -7,9 +7,9 @@ WORKDIR /
 # Pick all bash scripts
 COPY *.sh .
 
+# Provide metadata as labels
 ARG IMAGE_VERSION
 ARG IMAGE_REVISION
-
 LABEL org.opencontainers.image.authors="support@cytomine.com" \
       org.opencontainers.image.url="https://www.cytomine.org/" \
       org.opencontainers.image.documentation="https://doc.cytomine.org/" \
