@@ -81,6 +81,6 @@ build-docker-image:
     - docker push ${IMAGE_NAME}:${IMAGE_VERSION}
     - echo "Pushing image to registry, tagged as ${IMAGE_NAME}:latest"
     - docker push ${IMAGE_NAME}:latest
-    - echo "Successfully pushed docker image ${IMAGE_NAME}:${CM_VERSION} and ${DOCKER_IMAGE_NAME}:latest"
+    - echo "Successfully pushed docker image ${IMAGE_NAME}:${IMAGE_VERSION} and ${IMAGE_NAME}:latest"
 
     # - echo "No tag has been pushed, this build will not be published."
