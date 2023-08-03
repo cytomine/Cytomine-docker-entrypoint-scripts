@@ -18,14 +18,12 @@ if [ ! -z $URL_CORE ]; then
   echo "Added '$entry' to /etc/hosts"
 fi
 
-if [ ! -z $URL_IMS1 ]; then
-  entry="$IP $URL_IMS1"
-  echo $entry >> /etc/hosts
-  echo "Added '$entry' to /etc/hosts"
-fi
 
-if [ ! -z $URL_IMS2 ]; then
-  entry="$IP $URL_IMS2"
+if [ ! -z $URL_IMS1 ]; then
+  URL_IMS=${URL_IMS1}
+fi
+if [ ! -z $URL_IMS ]; then
+  entry="$IP $URL_IMS"
   echo $entry >> /etc/hosts
   echo "Added '$entry' to /etc/hosts"
 fi
